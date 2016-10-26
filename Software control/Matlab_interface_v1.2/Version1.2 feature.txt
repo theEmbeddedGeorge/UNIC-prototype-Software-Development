@@ -1,0 +1,4 @@
+Version 1.2 features (compared with v1.1):
+1. change the interface from bar graph to text display.
+2. achieve single brd control of the system on matlab gui (no need to open arduino IDE)
+3. achieve single brd warning feature: when actual current value fall outside the tolerable range, give a warning.

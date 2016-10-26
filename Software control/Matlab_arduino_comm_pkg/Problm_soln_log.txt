@@ -1,0 +1,46 @@
+************Problems encounter in matlab/arduino Serial connection and solutions**************
+
+1. Serial connection building delay. 
+
+Cause:
+While matlab wants to build up the connection with arduino by saying 'open(serial_object)', the conection is not built instantnously. Nevertheless, it rathers takes arduino at least 1.0 second to set up the connection and get ready for incoming data.
+
+Effect:
+If data is sent before arduino gets ready, arduino won't get ANYTHING, even though everything seems to be okay and no error message is displayed. 
+
+Solution:
+DO NOT send data right after building up serial connection at matlab side. It needs to wait for at least 1.0 second. At the code level, this is saying: put 'pause(t)' (t>1) right after 'fopen(serial_object)'. So matlab will wait for at least 1 second to send its data.
+
+Note: This may not be a universal phenonmenon for all arduino board as I did not see anyone else had this problem online. The wait time may vary board to board.        
+
+2. Signed interger overflow
+
+Cause:
+The max decimal number a signed 16-bit type integer can represent is 2^15 - 1, which is 32767, which may causes overflow when we send data larger this value.
+
+Effect:
+All voltage values after convert to binary notation, if larger than the max of signed 16 bit value, matlab will send the max number which is 32767 to the arduino.
+
+Solution:
+Defined all voltage data matrix to be unsigned type (max is 2^16-1). 
+
+3. Arduino serial reading byte limit 
+
+Cause: 
+The arduino function used to capture data sent through serial port, 'Serial.read()' can only read 4 bytes a time - one char a time. However, we need 16 bit, which is 2 bytes to reprensent the voltage value. And matlab sends 2 bytes to the arduino each time.
+
+Effect:
+Arduino will just save random/incorrect value because the format does not match.
+
+Solution:
+We need to tell arduino to read two bytes a time by following code:
+if(Serial.available()>=2) //if the buffer received at least two bytes (16-bit int)
+  {
+
+     unsigned int dumy = 0; //local variable to hold the received data temperally 
+     dumy = Serial.read(); //dumy hold the lower 8-bits of the data bcs Serial.read() only reads in 8 bits a time 
+     data_receive[i] = (Serial.read()<<8)|dumy;//matlab send the first 8 bit first and then the last 8 bit
+  } 
+
+
+    

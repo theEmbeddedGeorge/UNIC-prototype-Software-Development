@@ -1,0 +1,3 @@
+Version 1.3 features (compared with v1.2):
+1. achieve multi brd (5 brd, 25 channels) control of the system on matlab gui.
+2. achieve multi brd warning feature: when actual current value fall outside the tolerable range, give a warning.

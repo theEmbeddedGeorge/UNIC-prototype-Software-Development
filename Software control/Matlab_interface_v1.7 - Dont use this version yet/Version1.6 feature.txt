@@ -1,0 +1,3 @@
+Version 1.6 features (compared with v1.5):
+1. Modified the sweeping feature, add sweep monitoring feature. 
+

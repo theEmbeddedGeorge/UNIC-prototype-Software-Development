@@ -1,0 +1,3 @@
+Version 1.1 features (compared with v1.0):
+1. Refine Gui fundamentals
+2. achieve real time current monioring via bar graph

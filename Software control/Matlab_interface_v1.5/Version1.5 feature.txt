@@ -1,0 +1,5 @@
+Version 1.5 features (compared with v1.4):
+1. extend multi brd control from 50 channels 5 brd to 70 channels 7 brd.
+2. extend multi brd monitoring feature from 50 channels 5 brd to 70 channels 7 brd.
+3. facilitate sweeping feature 
+4. add emergency stop button 

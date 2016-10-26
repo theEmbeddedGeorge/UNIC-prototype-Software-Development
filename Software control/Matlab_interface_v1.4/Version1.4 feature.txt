@@ -1,0 +1,4 @@
+Version 1.4 features (compared with v1.3):
+1. extend multi brd control from 25 channels 5 brd to 50 channels 5 brd.
+2. extend multi brd monitoring feature from 25 channels 5 brd to 50 channels 5 brd.
+3. achieve warning log feature

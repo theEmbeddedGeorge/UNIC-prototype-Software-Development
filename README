@@ -1,0 +1,10 @@
+This is the UNIC prototype control software repository.
+It contains all developed versions including the most primitive one to the latest update.
+
+The control software can be divided into following major components:
+1.  The GUI interface 
+2.  The Arduino MCU control logic
+3.  Current monitoring Arduino logic 
+4.  Misc (Data fitting, Debugging and etc.)
+
+Contributor: George Li 

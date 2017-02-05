@@ -34,6 +34,9 @@ double ChanH_I = 0;
 double ChanI_I = 0;
 double ChanJ_I = 0;
 
+int loopCount = -2;
+double tempA;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -85,27 +88,38 @@ void loop() {
   I_C += String(ChanC_I);
   I_D += String(ChanD_I);
   I_E += String(ChanE_I);*/
+
+  if(abs(ChanA_volt - tempA) > 0.05)
+  {
+    Serial.print("\n");
+    loopCount++;
+  }
+
+  Serial.print(loopCount);
+  Serial.print(": ");
   Serial.print(" A:");
-  Serial.print(ChanA_volt); 
+  Serial.print(ChanA_volt,4); 
   Serial.print(" B:");
-  Serial.print(ChanB_volt);
+  Serial.print(ChanB_volt,4);
   Serial.print(" C:");
-  Serial.print(ChanC_volt);
+  Serial.print(ChanC_volt,4);
   Serial.print(" D:");
-  Serial.print(ChanD_volt);
+  Serial.print(ChanD_volt,4);
   Serial.print(" E:");
-  Serial.print(ChanE_volt);
+  Serial.print(ChanE_volt,4);
   Serial.print(" F:"); 
-  Serial.print(ChanF_volt);
+  Serial.print(ChanF_volt,4);
   Serial.print(" G:");
-  Serial.print(ChanG_volt);
+  Serial.print(ChanG_volt,4);
   Serial.print(" H:");
-  Serial.print(ChanH_volt);
+  Serial.print(ChanH_volt,4);
   Serial.print(" I:");
-  Serial.print(ChanI_volt);
+  Serial.print(ChanI_volt,4);
   Serial.print(" J:");
-  Serial.print(ChanJ_volt);
+  Serial.print(ChanJ_volt,4);
   Serial.print("\n");
- 
-  delay(100);
+
+  tempA = ChanA_volt;
+  
+  delay(1000);
 }

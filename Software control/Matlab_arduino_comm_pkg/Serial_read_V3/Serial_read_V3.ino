@@ -1,11 +1,9 @@
 
 //Author: George Li
 //%Crete date: 10/19/2016
-//Version number: 02 
+//Version number: 03
 //File description: To read 70*40 16-bit unsigned int voltage data from matlab
 //Note: work with 'Serial_sent' Matlab script 
-#include "ctype.h"
-#include "avr/pgmspace.h"
 
 #define BaudRate 57600
 #define Data_seq 70
@@ -20,19 +18,21 @@ int iterator = 0; //iterator for looping
 
 const int Size = Data_seq*Chan_num; //define the array size of the receive array
 String temp = "NULL";
-unsigned temp_ui = 0;
+unsigned int temp_ui = 0;
 
 //String data_receive[Size]; //1-d array used to receive voltage data from matlab
-unsigned int *volt_data_A; 
-unsigned int *volt_data_B; 
-unsigned int *volt_data_C; 
-unsigned int *volt_data_D; 
-unsigned int *volt_data_E; 
-unsigned int *volt_data_F; 
-unsigned int *volt_data_G; 
-unsigned int *volt_data_H; 
-unsigned int *volt_data_I; 
-unsigned int *volt_data_J; 
+unsigned int volt_data_A[40]; 
+//unsigned int* volt_data_A = (unsigned int *)mallc(sizeof(unsigned int));
+  
+unsigned int volt_data_B[40]; 
+unsigned int volt_data_C[40]; 
+unsigned int volt_data_D[40]; 
+unsigned int volt_data_E[40]; 
+unsigned int volt_data_F[40]; 
+unsigned int volt_data_G[40]; 
+unsigned int volt_data_H[40]; 
+unsigned int volt_data_I[40]; 
+unsigned int volt_data_J[40]; 
 int count_A=0;
 int count_B=0;
 int count_C=0;
@@ -53,7 +53,19 @@ void setup()
   pinMode(sig4,OUTPUT);
   
   Serial.begin(BaudRate); //set up BaudRate used to communicate with matlab
-  Serial.flush();
+
+  for (int i = 0; i < 40; i ++){
+    volt_data_A[i] = 0;
+    volt_data_B[i] = 0;
+    volt_data_C[i] = 0;
+    volt_data_D[i] = 0;
+    volt_data_E[i] = 0;
+    volt_data_F[i] = 0;
+    volt_data_G[i] = 0;
+    volt_data_H[i] = 0;
+    volt_data_I[i] = 0;
+    volt_data_J[i] = 0;
+  }
 }
 
 void loop()
@@ -62,75 +74,84 @@ void loop()
   {
     digitalWrite(sig4,HIGH);
     temp = Serial.readStringUntil('\n');
+
+//    if (count_B == 40)
+//      for (int i = 0; i < count_B; i ++)
+//        Serial.println(volt_data_B[i]);
     
     if (temp == "Auto") //if arduino receives signal to trigger auto mode 
       {
       sig = 1; //signal the arudino data being received.
       digitalWrite(sig7,HIGH);
       }
-    else if (temp == "end")
+    else if (iterator == 400)
     {
+      //Serial.println("board2 receive all data!");
       sig = 2;
       digitalWrite(sig11,HIGH);
     }
-    else
+    else if (temp != "NULL" && temp.length() > 1) 
     {
       if (isNum(temp.substring(1))) 
         {   
-              //Serial.println(temp.charAt(0));
-            switch (temp.charAt(0)){
+          iterator ++;   
+          switch (temp.charAt(0)){
             case 'A':
                     temp_ui = temp.substring(1).toInt();
                     volt_data_A[count_A] = temp_ui;
                     count_A ++;
-                    //Serial.println(temp_ui);
-                    //volt_data_A ++;
                     break;
-//            case 'B':
-//                    *volt_data_B = temp.substring(1).toInt();
-//                    volt_data_B ++;
-//                    break;
-//            case 'C':
-//                    *volt_data_C = temp.substring(1).toInt();
-//                    volt_data_C ++;
-//                    break;
-//            case 'D':
-//                    *volt_data_D = temp.substring(1).toInt();
-//                    volt_data_D ++;
-//                    break;
-//            case 'E':
-//                    *volt_data_E = temp.substring(1).toInt();
-//                    volt_data_E ++;
-//                    break;
-//            case 'F':
-//                    *volt_data_F = temp.substring(1).toInt();
-//                    volt_data_F ++;
-//                    break;
-//            case 'G':
-//                    *volt_data_G = temp.substring(1).toInt();
-//                    volt_data_G ++;
-//                    break;
-//            case 'H':
-//                    *volt_data_H = temp.substring(1).toInt();
-//                    volt_data_H ++;
-//                    break;
-//            case 'I':
-//                    *volt_data_I = temp.substring(1).toInt();
-//                    volt_data_I ++;
-//                    break;
-//            case 'J':
-//                    *volt_data_J = temp.substring(1).toInt();
-//                    volt_data_J ++;
-//                    break;        
+            case 'B':
+                    temp_ui = temp.substring(1).toInt();
+                    volt_data_B[count_B] = temp_ui;
+                    count_B ++;
+                    break;
+            case 'C':
+                    temp_ui = temp.substring(1).toInt();
+                    volt_data_C[count_C] = temp_ui;
+                    count_C ++;
+                    break;
+            case 'D':
+                    temp_ui = temp.substring(1).toInt();
+                    volt_data_D[count_D] = temp_ui;
+                    count_D ++;
+                    break;
+            case 'E':
+                    temp_ui = temp.substring(1).toInt();
+                    volt_data_E[count_E] = temp_ui;
+                    count_E ++;
+                    break;
+            case 'F':
+                    temp_ui = temp.substring(1).toInt();
+                    volt_data_F[count_F] = temp_ui;
+                    count_F ++;
+                    break;
+            case 'G':
+                    temp_ui = temp.substring(1).toInt();
+                    volt_data_G[count_G] = temp_ui;
+                    count_G ++;
+                    break;
+            case 'H':
+                    temp_ui = temp.substring(1).toInt();
+                    volt_data_H[count_H] = temp_ui;
+                    count_H ++;
+                    break;
+            case 'I':
+                    temp_ui = temp.substring(1).toInt();
+                    volt_data_I[count_I] = temp_ui;
+                    count_I ++;
+                    break;
+            case 'J':
+                    temp_ui = temp.substring(1).toInt();
+                    volt_data_J[count_J] = temp_ui;
+                    count_J ++;
+                    break;        
             default:  
                     break;
             }
-            //Serial.println(volt_data_A[count_A]);
       }
-      iterator ++;      
    }
   }
-
 }
 
 boolean isNum(String input)

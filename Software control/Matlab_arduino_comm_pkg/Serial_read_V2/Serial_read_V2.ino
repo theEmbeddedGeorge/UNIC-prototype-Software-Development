@@ -11,7 +11,7 @@
 #define Data_seq 40
 #define Chan_num 10
 
-const short sig7 = 7;
+const short sig7 = 12;
 const short sig11 = 11;
 const short sig4 = 4;
 
@@ -30,9 +30,9 @@ void setup()
   pinMode(sig7,OUTPUT);
   pinMode(sig11,OUTPUT);
   pinMode(sig4,OUTPUT);
-  
+
   Serial.begin(BaudRate); //set up BaudRate used to communicate with matlab
-  Serial.flush();
+  //Serial.flush();
   //Serial.println("waitting for input");
   //2-d Volt_dat matrix intialization
 //  for(int i = 0; i<Data_seq; i++)
@@ -48,33 +48,37 @@ void loop()
   if(Serial.available()> 0) 
   {
     digitalWrite(sig4,HIGH);
-    //temp = Serial.readStringUntil('\n');
-    //Serial.println(data_receive[iterator]);
-    if (temp == "Auto") //if arduino receives signal to trigger auto mode 
+    temp = Serial.readStringUntil('\n');
+    Serial.println(iterator);
+    if (temp == "Auto\n") //if arduino receives signal to trigger auto mode 
       {
       sig = 1; //signal the arudino data being received.
       digitalWrite(sig7,HIGH);
       }
-    else if (temp == "end")
+    else if (temp == "Finsh\n")
     {
       sig = 2;
       digitalWrite(sig11,HIGH);
+      Serial.println("Hello");
     }
     else
     {
-      if (isNum(temp.substring(1))) 
+      data_receive[iterator] = temp;
+      //Serial
+      //Serial.println(data_receive[iterator]);
+     /* if (isNum(temp.substring(1))) 
         {
           data_receive[iterator] = temp;
           Serial.println(data_receive[iterator]);
-        }
+        }*/
       iterator ++;      
     }
   }
-//  else if (sig == 1)
-//  {
-//    for (int m = 0; m< Size; m++)
-//        Serial.println(data_receive[m]);     
-//  }
+  /*if (iterator >= 399)
+  {
+    for (int m = 0; m< Size; m++)
+        Serial.println(data_receive[m]);     
+  }*/
   //Serial.println(iterator);
 }
 

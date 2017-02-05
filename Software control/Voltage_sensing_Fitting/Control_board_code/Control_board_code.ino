@@ -9,7 +9,7 @@ String sResp = "?";
 int dactype;
 word dataVolt;
 int offset;
-int fitting_interval = 3000;
+int fitting_interval = 6000;
 
 int sensorTempPin1 = 0; 	// these should go to 12 temperature sensors
 int sensorTempPin2 = 1;
@@ -174,7 +174,7 @@ void ProcessCommand ()
          }
          break;
       case 'Q':        
-        Serial.println("FItting mode Running");
+        Serial.println("Fitting Mode Running");
         TestDacCommand (sBuffer.substring (1));    // set dacs to a value
         break;
     }
@@ -242,6 +242,7 @@ void TestDacCommand (String PsCommand)
   float temperatureC;                  // temperature in deg C
   int it = 0;
   int stop_sig = 0;
+  int loopCount = 0;
   
   Serial.flush();
   vlt = 0xB2E8;
@@ -253,7 +254,10 @@ void TestDacCommand (String PsCommand)
     SPI.transfer(vlt);                    // always leave lower 8 bits the same
     digitalWrite (MaOutputPins [i], HIGH); // set chip enable off                      
   }
-  Serial.println(vlt);
+  Serial.print(loopCount);
+  Serial.print(": ");
+  Serial.print(vlt);
+  Serial.print("\n");
   delay( fitting_interval );
   while (it < 8)
   {
@@ -283,7 +287,11 @@ void TestDacCommand (String PsCommand)
         }
     
       vlt = vlt + offset;		         // add in offset which will keep changing the current (1000)
-      Serial.println(vlt);
+      loopCount++;
+      Serial.print(loopCount);
+      Serial.print(": ");
+      Serial.print(vlt);
+      Serial.print("\n");
       for (i = 0; i < OUTPUTPINCOUNT; i++)
       {
         digitalWrite (MaOutputPins [i], LOW);  // set chip enable on
